@@ -1,0 +1,144 @@
+                  decoration: const InputDecoration(
+                    labelText: 'Age',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null ||
+                        value.trim().isEmpty) {
+                      return 'Age is required';
+                    }
+
+                    final int? age =
+                        int.tryParse(value.trim());
+
+                    if (age == null ||
+                        age <= 0 ||
+                        age > 120) {
+                      return 'Enter a valid age';
+                    }
+
+                    return null;
+                  },
+                ),
+
+                const SizedBox(height: 16),
+
+                // Password
+                TextFormField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty) {
+                      return 'Password is required';
+                    }
+
+                    if (value.length < 6) {
+                      return 'Password must be at least 6 characters';
+                    }
+
+                    return null;
+                  },
+                ),
+
+                const SizedBox(height: 16),
+
+                // Gender
+                DropdownButtonFormField<Gender>(
+                  value: _selectedGender,
+                  decoration: const InputDecoration(
+                    labelText: 'Gender',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: Gender.values.map((gender) {
+                    return DropdownMenuItem<Gender>(
+                      value: gender,
+                      child: Text(
+                        gender.name.toUpperCase(),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (Gender? value) {
+                    if (value != null) {
+                      setState(() {
+                        _selectedGender = value;
+                      });
+                    }
+                  },
+                ),
+
+                const SizedBox(height: 20),
+
+                // DOB
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        _selectedDOB == null
+                            ? 'DOB: Not Selected'
+                            : 'DOB: '
+                                '${_selectedDOB!.day}/'
+                                '${_selectedDOB!.month}/'
+                                '${_selectedDOB!.year}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+
+                    ElevatedButton(
+                      onPressed: _pickDOB,
+                      child: const Text(
+                        'Pick Date',
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 10),
+
+                // Terms and Conditions
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _termsAccepted,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _termsAccepted =
+                              value ?? false;
+                        });
+                      },
+                    ),
+
+                    const Expanded(
+                      child: Text(
+                        'I accept the Terms and Conditions',
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                // Submit Button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _submitForm,
+                    child: const Text(
+                      'Submit',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
